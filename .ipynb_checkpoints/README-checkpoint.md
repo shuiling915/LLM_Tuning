@@ -44,7 +44,7 @@ python tokenize_dataset_rows.py \
 
 ```bash
 python finetune.py \
-    --data_path data/alpaca \
+    --dataset_path data/alpaca \
     --output_dir output \
     --model_path model_path \
     --lora_rank 8 \

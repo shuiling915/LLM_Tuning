@@ -1,7 +1,7 @@
 import argparse
 import json
 from tqdm import tqdm
-from modelscope import AutoTokenizer, AutoConfig
+from transformers import AutoTokenizer, AutoConfig
 import datasets
 
 
@@ -68,7 +68,7 @@ def main():
     args = parser.parse_args()
     with open(args.data_path) as f:
         examples = json.load(f)[0:args.num_examples]
-
+    print(111)
     dataset = datasets.Dataset.from_generator(
         lambda: example2feature(examples, args.max_seq_length, args.model_path, args.version, args.skip_overlength)
     )

@@ -1,7 +1,7 @@
 import argparse
 import json
 from tqdm import tqdm
-from modelscope import AutoTokenizer, AutoConfig
+from transformers import AutoTokenizer, AutoConfig
 import datasets
 
 
@@ -42,6 +42,7 @@ def preprocess(tokenizer, config, example, max_seq_length, version):
         return {"input_ids": input_ids, "seq_len": len(a_ids)}
 
 def example2feature(examples, max_seq_length, model_path, version='v1', skip_overlength=False):
+    print("enter gen")
     tokenizer = AutoTokenizer.from_pretrained(
         model_path, trust_remote_code=True)
     config = AutoConfig.from_pretrained(
@@ -67,7 +68,7 @@ def main():
     args = parser.parse_args()
     with open(args.data_path) as f:
         examples = json.load(f)[0:args.num_examples]
-
+    print(111)
     dataset = datasets.Dataset.from_generator(
         lambda: example2feature(examples, args.max_seq_length, args.model_path, args.version, args.skip_overlength)
     )

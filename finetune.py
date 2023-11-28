@@ -2,8 +2,7 @@ from transformers.integrations import TensorBoardCallback
 from torch.utils.tensorboard import SummaryWriter
 from transformers import TrainingArguments
 from transformers import Trainer, HfArgumentParser
-from modelscope import Model, AutoTokenizer
-from transformers import PreTrainedTokenizerBase
+from transformers import PreTrainedTokenizerBase,AutoModel, AutoTokenizer
 import torch
 import torch.nn as nn
 from peft import get_peft_model, LoraConfig, TaskType
@@ -14,8 +13,8 @@ import os
 
 @dataclass
 class FinetuneArguments:
-    dataset_path: str = field(default="data/alpaca")
-    model_path: str = field(default="output")
+    data_path: str = field(default="data/alpaca")
+    # output_dir: str = field(default="output")
     lora_rank: int = field(default=8)
     model_path: str = field(default="model_path/chatglm")
 
@@ -49,6 +48,7 @@ class DataCollator:
             input_ids.append(_ids)
         input_ids = torch.stack(input_ids)
         labels = torch.stack(labels_list)
+        print("input_ids", input_ids)
         return {
             "input_ids": input_ids,
             "labels": labels,
@@ -82,7 +82,7 @@ def main():
 
     # init model
 
-    model = Model.from_pretrained(
+    model = AutoModel.from_pretrained(
         finetune_args.model_path,
         load_in_8bit=True,
         trust_remote_code=True,
@@ -111,7 +111,7 @@ def main():
     model = get_peft_model(model, peft_config)
 
     # load dataset
-    dataset = datasets.load_from_disk(finetune_args.dataset_path)
+    dataset = datasets.load_from_disk(finetune_args.data_path)
     print(f"\n{len(dataset)=}\n")
 
     # start train
