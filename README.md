@@ -15,20 +15,21 @@
 - - cuda>=11.6, cupti, cuDNN, TensorRT等深度学习环境
 - - pip3 install -r requirements_LLM.txt -i https://pypi.douban.com/simple/
 
+### 修改transformers下载源头
+
+- -chmod 777 /opt/conda/lib/python3.8/site-packages/huggingface_hub/
+- -chmod 777 /opt/conda/lib/python3.8/site-packages/transformers/
+
+- -grep -ilr 'huggingface.co' /opt/conda/lib/python3.8/site-packages/huggingface_hub | xargs -I@ sed -i  's/huggingface.co/hf-mirror.com/g' @
+- -grep -ilr 'huggingface.co' /opt/conda/lib/python3.8/site-packages/transformers | xargs -I@ sed -i  's/huggingface.co/hf-mirror.com/g' @
+
 
 ### 数据预处理
 
 tokenization
 
 ```bash
-python tokenize_dataset_rows.py \
-    --json_path data/alpaca_data.json \
-    --save_path data/alpaca \
-    --model_path skyline2006/llama-7b/ \
-    --version v1 \
-    --num_examples 1500 \
-    --max_seq_length 200 \ 
-    --skip_overlength  False             
+python finetune.py --data_path data/alpaca --output_dir output --model_path NousResearch/Llama-2-7b-hf --lora_rank 8 --per_device_train_batch_size 6 --gradient_accumulation_steps 1 --max_steps 52000 --save_steps 1000 --save_total_limit 2 --learning_rate 1e-4 --fp16 --remove_unused_columns false --logging_steps 50           
     
 ```
 
@@ -43,20 +44,7 @@ python tokenize_dataset_rows.py \
 ### 训练
 
 ```bash
-python finetune.py \
-    --data_path data/alpaca \
-    --output_dir output \
-    --model_path model_path \
-    --lora_rank 8 \
-    --per_device_train_batch_size 6 \
-    --gradient_accumulation_steps 1 \
-    --max_steps 52000 \
-    --save_steps 1000 \
-    --save_total_limit 2 \
-    --learning_rate 1e-4 \
-    --fp16 \
-    --remove_unused_columns false \
-    --logging_steps 50 \
+python finetune.py --data_path data/alpaca --output_dir output --model_path THUDM/chatglm2-6b --lora_rank 8 --per_device_train_batch_size 6 --gradient_accumulation_steps 1 --max_steps 52000 --save_steps 1000 --save_total_limit 2 --learning_rate 1e-4 --fp16 --remove_unused_columns false --logging_steps 50
 
 ```
 
