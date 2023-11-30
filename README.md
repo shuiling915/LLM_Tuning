@@ -13,7 +13,7 @@
 - 环境：
 - - python>=3.8
 - - cuda>=11.6, cupti, cuDNN, TensorRT等深度学习环境
-- - pip3 install -r requirements_LLM.txt -i https://pypi.douban.com/simple/
+- - pip3 install -r requirements_llama.txt -i https://pypi.douban.com/simple/
 
 ### 修改transformers下载源
 
