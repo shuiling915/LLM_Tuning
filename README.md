@@ -15,7 +15,7 @@
 - - cuda>=11.6, cupti, cuDNN, TensorRT等深度学习环境
 - - pip3 install -r requirements_LLM.txt -i https://pypi.douban.com/simple/
 
-### 修改transformers下载源头
+### 修改transformers下载源
 
 - -chmod 777 /opt/conda/lib/python3.8/site-packages/huggingface_hub/
 - -chmod 777 /opt/conda/lib/python3.8/site-packages/transformers/
