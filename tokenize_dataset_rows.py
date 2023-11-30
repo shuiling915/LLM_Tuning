@@ -43,6 +43,7 @@ def preprocess(tokenizer, config, example, max_seq_length, version):
 
 def example2feature(examples, max_seq_length, model_path, version='v1', skip_overlength=False):
     print("enter gen")
+    from modelscope import AutoTokenizer, AutoConfig
     tokenizer = AutoTokenizer.from_pretrained(
         model_path, trust_remote_code=True)
     config = AutoConfig.from_pretrained(
@@ -68,7 +69,7 @@ def main():
     args = parser.parse_args()
     with open(args.data_path) as f:
         examples = json.load(f)[0:args.num_examples]
-    print(111)
+    # print("examples", examples[0:10])
     dataset = datasets.Dataset.from_generator(
         lambda: example2feature(examples, args.max_seq_length, args.model_path, args.version, args.skip_overlength)
     )

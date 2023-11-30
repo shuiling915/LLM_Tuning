@@ -80,12 +80,12 @@ def main():
     ).parse_args_into_dataclasses()
 
     # init model
-
+    # from modelscope import Model
     model = AutoModel.from_pretrained(
         finetune_args.model_path,
         load_in_8bit=True,
         trust_remote_code=True,
-        device_map="auto",
+        device_map="auto"
     )
     tokenizer = AutoTokenizer.from_pretrained(
         finetune_args.model_path, trust_remote_code=True

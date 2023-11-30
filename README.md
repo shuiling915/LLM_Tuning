@@ -29,7 +29,8 @@
 tokenization
 
 ```bash
-python finetune.py --data_path data/alpaca --output_dir output --model_path NousResearch/Llama-2-7b-hf --lora_rank 8 --per_device_train_batch_size 6 --gradient_accumulation_steps 1 --max_steps 52000 --save_steps 1000 --save_total_limit 2 --learning_rate 1e-4 --fp16 --remove_unused_columns false --logging_steps 50           
+python tokenize_dataset_rows.py --data_path data/alpaca_data.json --save_path data/alpaca --model_path ZhipuAI/chatglm3-6b --version v1 --num_examples 1500 --max_seq_length 200 --skip_overlength  False
+         
     
 ```
 
@@ -44,7 +45,7 @@ python finetune.py --data_path data/alpaca --output_dir output --model_path Nous
 ### 训练
 
 ```bash
-python finetune.py --data_path data/alpaca --output_dir output --model_path THUDM/chatglm2-6b --lora_rank 8 --per_device_train_batch_size 6 --gradient_accumulation_steps 1 --max_steps 52000 --save_steps 1000 --save_total_limit 2 --learning_rate 1e-4 --fp16 --remove_unused_columns false --logging_steps 50
+python finetune.py --data_path data/alpaca --output_dir output --model_path /mnt/workspace/.cache/modelscope/ZhipuAI/chatglm3-6b --lora_rank 8 --per_device_train_batch_size 6 --gradient_accumulation_steps 1 --max_steps 52000 --save_steps 1000 --save_total_limit 2 --learning_rate 1e-4 --fp16 --remove_unused_columns false --logging_steps 50
 
 ```
 
