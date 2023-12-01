@@ -9,6 +9,7 @@ from peft import get_peft_model, LoraConfig, TaskType
 from dataclasses import dataclass, field
 import datasets
 import os
+os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
 
 
 @dataclass
@@ -17,6 +18,7 @@ class FinetuneArguments:
     # output_dir: str = field(default="output")
     lora_rank: int = field(default=8)
     model_path: str = field(default="model_path/chatglm")
+    CUDA_LAUNCH_BLOCKING=1
 
 
 class CastOutputToFloat(nn.Sequential):
@@ -80,15 +82,15 @@ def main():
     ).parse_args_into_dataclasses()
 
     # init model
-    # from modelscope import Model
-    model = AutoModel.from_pretrained(
+    from modelscope import Model, AutoTokenizer
+    model = Model.from_pretrained(
         finetune_args.model_path,
         load_in_8bit=True,
         trust_remote_code=True,
         device_map="auto"
     )
     tokenizer = AutoTokenizer.from_pretrained(
-        finetune_args.model_path, trust_remote_code=True
+        "ZhipuAI/chatglm3-6b", trust_remote_code=True
     )
     model.gradient_checkpointing_enable()
     model.enable_input_require_grads()
